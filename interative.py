@@ -58,12 +58,16 @@ def search_peer_kinds(kind:str,**argv):
         table.add_row('Location',i['location'])
         console.print(table)
 
-def start():
-    key = verif_key()
-    if not key :
-        init(input(('Please enter your shodan api key :')))
-    else:
+def start(*key):
+    if len(key) != 0:
         init(key)
+    key = verif_key()
+    if key_v :
+        init(key)
+    else:
+        init(input(('Please enter your shodan api key :')))
+
+
 
     
 
