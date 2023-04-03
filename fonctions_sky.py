@@ -99,7 +99,7 @@ def seach_service(kind,**argv):
 	x = Instance.search(kind)
 	return filters(x,argv)
 
-def exploit()
+
 
 
 	

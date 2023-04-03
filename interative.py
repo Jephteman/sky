@@ -1,75 +1,102 @@
-from rich.console import Console
-from rich.table import Table
-from fonctions import *
+from colorama import init , Fore
+from fonctions import (
+    search ,
+    version,
+    use as use_,
+    p_session
+)
 
-console = Console()
-table = Table()
+init(autoreset=True)
+mysession = ''
 
-def start(*key):
-    if len(key) != 0:
-        init(key)
-    key = verif_key()
-    if key_v :
-        init(key)
+def session(name):
+    """ Change a sesion """
+    if name in p_sessions.keys():
+        try:
+            global mysession
+            mysession = name
+            p_session[name].session()
+        except KeyboardInterrupt:
+            print(Fore.GREEN+f'[+] Session {name} en arrière plan!')
     else:
-        init(input(('Please enter your shodan api key :')))
-
-def view_vuln(ip:str):
-    x=vuln(ip)
-
-    table.add_column("Type", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Value", style="magenta")
-    table.add_row('hostnames',x['hostnames'])
-    table.add_row('ports',x['ports'])
-    table.add_row('vulns',x['vulns'])
-    console.print(table)
-
-def view_info(ip:str,**argx):
-    x = info(ip)
-    
-    table.add_column("Type", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Value", style="magenta")
-
-    table.add_row('ip',x['ip_str'])
-
-    if 'asn' in x.keys():
-    	table.add_row('asn',x['asn'])
-    if 'ports' in x.keys():
-    	table.add_row('ports',str(x['ports']))
-    if 'vulns' in x.keys():
-    	table.add_row('vuls',x['vulns'])
-    table.add_row('os',x['os'])
-
-    if 'domains' in x.keys():
-    	table.add_row('domains',str(x['domains']))
-    if 'org' in x.keys():
-    	table.add_row('org',x['org'])
-    if 'hostnames' in x.keys():
-    	table.add_row('hostnames',x['hostnames'])
-    if 'location' in x.keys():
-    	table.add_row('country_name',x['location']['country_name'])
-    	table.add_row('city',x['location']['city'])
-    	table.add_row('longitude',x['location']['longitude'])
-    	table.add_row('latitude',x['location']['latitude'])
-    if 'data' in x.keys():
-        table.add_column('Data',x['data'])
-    console.print(table)
-
-def search_peer_kinds(kind:str,**argv):
-    x = seach_service(kind,argv)
-
-    table.add_column("Type", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Value", style="magenta")
-
-    for i in x:
-        table.add_row('IP',i['ip_str'])
-        table.add_row('Ports',i['ports'].__str__())
-        table.add_row('Location',i['location'].__str__())
-        console.print(table)
+        print(Fore.RED+'[+] La sesion {} n\'existe pas !'.format(name))
 
 
+def set(arg:dict):
+    """ attribue la ou les valeur """
+    if type(arg) == type(dict()):
+        try:
+            for mysession in arg.keys():
+                p_session[0].parametre[mysession.upper()]=arg[mysession]
+                print(mysession.upper(),'==> ',arg[mysession])
+        except IndexError:
+            pass
+    else:
+        print(Fore.RED+'[+] Entré un format valide')
+        print("ex : set({'user':'admin','rhosts':'10.10.0.1'})")
 
 
+def use(cve):
+    global mysession
+    last = len(p_session.keys()) + 1
+    p_session[last]=use_(cve)
+    mysession = last
 
-    
+
+def info(*argv):
+    """ Fonction servant a trouver des informations sur un exploit (cve) """
+    try:
+        if type(argv[0]) == type(str()) or type(argv[0]) == type(int()):
+            x=mydb.cursor()
+            x.execute("select nom,desc from exploit where cve == '{0}' or num == {0};".format(argv[0]))
+            for name ,desc in x:
+                print(name)
+                print(desc)
+    except IndexError:
+        if len(p_session) != 0 :
+            p_session[0].info()
+        else:
+            print(Fore.GREEN+"""
+                eXpy est un programme Open-Source codé par Mr me
+
+                """)
+
+
+def back():
+    """ Retour en arriere """
+    global mysession
+    mysession = ''
+
+
+def show_options():
+    """ Affiche les options """
+    if mysession != "":
+        p_session[mysession].options()
+    else:
+        print(Fore.GREEN+"Veillez d'abord choisir un exploit")
+
+
+options = show_options
+
+
+def run():
+    """ execute l'exploit """
+    try:
+        if mysession in p_session.keys():
+            p_session[mysession].run()
+        else:
+            print(Fore.GREEN + '[+] Veillez choisir un exploit et completer les arguments')
+    except KeyboardInterrupt:
+        print(Fore.GREEN + f'[+] session {mysession} en arriere plan')
+
+
+exploit = run
+
+
+def sessions():
+    """ s'occupe d'affichier les sessions """
+    if len(p_session) != 0:
+        print('\n')
+        for i in p_session.keys():
+            print('id : \t{0} \t{1}:{2} \t{3}'.format(i,p_session[i].parametre['RHOSTS'],p_session[i].parametre['RPORTS'],p_session[i].exploit))
 

@@ -1,0 +1,2 @@
+ipython>=7.20.0
+colorama>=0.4.4
