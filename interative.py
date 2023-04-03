@@ -5,6 +5,15 @@ from fonctions import *
 console = Console()
 table = Table()
 
+def start(*key):
+    if len(key) != 0:
+        init(key)
+    key = verif_key()
+    if key_v :
+        init(key)
+    else:
+        init(input(('Please enter your shodan api key :')))
+
 def view_vuln(ip:str):
     x=vuln(ip)
 
@@ -54,18 +63,11 @@ def search_peer_kinds(kind:str,**argv):
 
     for i in x:
         table.add_row('IP',i['ip_str'])
-        table.add_row('Ports',i['ports'])
-        table.add_row('Location',i['location'])
+        table.add_row('Ports',i['ports'].__str__())
+        table.add_row('Location',i['location'].__str__())
         console.print(table)
 
-def start(*key):
-    if len(key) != 0:
-        init(key)
-    key = verif_key()
-    if key_v :
-        init(key)
-    else:
-        init(input(('Please enter your shodan api key :')))
+
 
 
 

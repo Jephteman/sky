@@ -11,7 +11,6 @@ conf.InteractiveShellApp.exec_lines = [
     '#get_ipython().prompts=TXlQcm9tcHQK(get_ipython())',
     '#from fonctions import search',
     'from interative import (view_vuln,view_info,search_peer_kinds,banner_1,start)',
-    'start()'
     ]
 
 

@@ -54,7 +54,6 @@ def vuln(ip:str):
 	return x
 
 def info(ip:str,**argv):
-	table = Table(title=f'Infoarmation to {ip} ')
 	"""
 		Gie information about ip
 	"""
@@ -65,7 +64,6 @@ def info(ip:str,**argv):
 		return
 	return x
 	
-
 def filters(resultat,**argv):
 	if len(argv.keys()) == 0:
 		return resultat
@@ -75,9 +73,9 @@ def filters(resultat,**argv):
 	for i in argv.keys():
 		if n == 1:
 			condition +=  "'{resultat}['{i}']' == '{argv}['{i}']' ".format(i=i)
+			n=1
 		else:
 			condition +=  "and '{resultat}['{i}']' == '{argv}['{i}']' ".format(i=i)
-			n +=1
 	
 	condition += 'else True'
 
@@ -85,7 +83,6 @@ def filters(resultat,**argv):
 		exec(condition.format(argv=argv,resultat=i))
 		if ret:
 			y.append(i)
-
 
 def seach_service(kind,**argv):
 	support_kinds = {'adb':'Android Debug Bridge','vnc':'vnc',\
@@ -102,7 +99,7 @@ def seach_service(kind,**argv):
 	x = Instance.search(kind)
 	return filters(x,argv)
 
-	
+def exploit()
 
 
 	
