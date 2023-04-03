@@ -1,16 +1,12 @@
-from database import database
+from sky.database import database
 import importlib
 from colorama import init , Fore
 
 init(autoreset=True)
 
-version='0.0.1.1'
 p_session={}
 sessions={}
 
-"""
-fonctions est un ensemble de fonctions et class pour faire resembler le plus ce programme à Metatsploit
-"""
 class use():
     """ La class use , permet de choisir un exploit (cve) """
     def __init__(self,exploit,**argv):
@@ -30,7 +26,7 @@ class use():
             raise Exception(Fore.RED+"[+] Exploit Indisponible ! ")
 
         self.parametre={}
-        self.module=importlib.import_module('exploits.'+self.exploit.replace('-', '_'),package='exploits')
+        self.module=importlib.import_module('exploits.'+self.exploit.replace('-', '_'),package='sky')
         self.module.auto_args(self.parametre)
 
     def __str__(self):
@@ -53,32 +49,17 @@ class use():
         print(self.name)
         print(self.desc)
 
-# Fonction de recherche d'exploit
-def search(exp:str,vendeur=None):
-    # exp.replace("'",'\'') doit ajouter des protection cotre les injection sql
-
-    """ 
-        Fonction servant a chercher des exploits dans la base de donnée
-        exp : expression
-        vendeur : nom du vendeur
+def set(session:int,param:dict):
     """
-    found=0
+        Pose les parametres d'exploitation
+    """
+    global p_session
+    for i in param.keys():
+        p_session[session].parametre[i]=param[i]
 
-    x = database.mydb.cursor()
+def show_options(session:int):
+    print(p_session[session].options)
 
-    if vendeur is None:
-        x.execute("SELECT * FROM exploit WHERE CVE LIKE '%{0}%' OR num LIKE '%{0}%' OR desc LIKE '%{0}%' ;".format(exp))
-    else:
-        vendeur = str(vendeur).replace("'","\'")
-        x.execute("SELECT * FROM exploit WHERE (CVE LIKE '%{0}%' OR num LIKE '%{0}%' OR desc LIKE '%{0}%') AND vendeur == {1} ;".format(exp,vendeur))
 
-    for (num,cve, nom ,auteur, vendeurs,desc ) in x:
-        print(
-            f' num :{Fore.RED+str(num)}',
-            f' cve :{Fore.GREEN+cve}',
-            )
-        found=1
 
-    if found != 1:
-        print(Fore.RED+'[+] Exploit Indisponible !')
 

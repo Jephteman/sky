@@ -1,0 +1,1 @@
+Il faut placé la exploit.db dans /opt/sky ou /share/sky

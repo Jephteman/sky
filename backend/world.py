@@ -1,16 +1,8 @@
-from colorama import init, Fore
-from rich.console import Console
-from rich.table import Table
 from shodan.client import Shodan
 import subprocess
 import requests
 
-init(autoreset=True)
-console = Console()
-
-
 Instance = ''
-
 
 def init(key):
 	global Instance 
@@ -23,25 +15,6 @@ def verif_key():
 	else:
 		return False
 
-def banner_1():
-	print("""
-	 ________________________________________________________________
-	/                                                                \
-	|  Welcom to sky , a simple promgram to hack the world machine , |
-	\                                                                /
-	 ----------------------------------------------------------------\
-	    \
-	     \
-	         .--.
-	        |o_o |
-	        |:_/ |
-	       //   \ \
-	      (|     | )
-	     /'\_   _/`\
-	     \___)=(___/
-
-		""")
-
 def vuln(ip:str):
 	"""
 		show vuln of ip
@@ -49,7 +22,7 @@ def vuln(ip:str):
 	x = requests.get(f"https://internetdb.shodan.io/{ip}").json()
 	if x['detail'] == 'No information available':
 		print('Information indisponible')
-		return
+		return None
 	
 	return x
 
@@ -60,8 +33,7 @@ def info(ip:str,**argv):
 	try:
 		x = Instance.host(ip)
 	except shodan.exception.APIError:
-		print(Fore.RED + '[+] Aucunne Information sur cette adresse IP ')
-		return
+		return None
 	return x
 	
 def filters(resultat,**argv):
@@ -98,18 +70,4 @@ def seach_service(kind,**argv):
 
 	x = Instance.search(kind)
 	return filters(x,argv)
-
-
-
-
-	
-
-
-	
-
-	
-
-
-
-
 

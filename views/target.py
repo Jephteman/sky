@@ -1,20 +1,14 @@
+from sky.backend import (vuln, info)
 from rich.console import Console
 from rich.table import Table
-from fonctions import *
 
 console = Console()
 table = Table()
 
-def start(*key):
-    if len(key) != 0:
-        init(key)
-    key = verif_key()
-    if key_v :
-        init(key)
-    else:
-        init(input(('Please enter your shodan api key :')))
-
 def view_vuln(ip:str):
+    """
+    liste le vulnerabilité decouverte par shodan
+    """
     x=vuln(ip)
 
     table.add_column("Type", justify="right", style="cyan", no_wrap=True)
@@ -25,6 +19,9 @@ def view_vuln(ip:str):
     console.print(table)
 
 def view_info(ip:str,**argx):
+    """
+    DOnne les information sur une addresse IP
+    """
     x = info(ip)
     
     table.add_column("Type", justify="right", style="cyan", no_wrap=True)
@@ -54,22 +51,4 @@ def view_info(ip:str,**argx):
     if 'data' in x.keys():
         table.add_column('Data',x['data'])
     console.print(table)
-
-def search_peer_kinds(kind:str,**argv):
-    x = seach_service(kind,argv)
-
-    table.add_column("Type", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Value", style="magenta")
-
-    for i in x:
-        table.add_row('IP',i['ip_str'])
-        table.add_row('Ports',i['ports'].__str__())
-        table.add_row('Location',i['location'].__str__())
-        console.print(table)
-
-
-
-
-
-    
 
