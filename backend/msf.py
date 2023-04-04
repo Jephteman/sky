@@ -5,7 +5,6 @@ from colorama import init , Fore
 init(autoreset=True)
 
 p_session={}
-sessions={}
 
 class use():
     """ La class use , permet de choisir un exploit (cve) """
@@ -34,7 +33,9 @@ class use():
 
     def options(self):
         """ Affiche les options pour executé l'exploit """
-        self.module.notice(self.parametre)
+        print('Les options et leurs valeurs')
+        for i in self.module.ARGS:
+            print(f'\t {i} ==> {self.parametre[i]')
 
     def run(self):
         """ Execute l'exploit """
@@ -58,7 +59,7 @@ def set(session:int,param:dict):
         p_session[session].parametre[i]=param[i]
 
 def show_options(session:int):
-    print(p_session[session].options)
+    print(p_session[session].options())
 
 
 
