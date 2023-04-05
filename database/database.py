@@ -4,13 +4,14 @@ from colorama import init, Fore
 init(autoreset=True)
 
 #   ma base de donneé
-mydb = sqlite3.Connection('database/exploit.db')
+exploit_db = sqlite3.Connection('database/exploit.db')
+target_db = sqlite3.Connection('database/target.db')
 
 def search_exloit(exploit:str):
     """
     exploit : CVE of vulnerability or number in db
     """
-    sql = mydb.cursor()
+    sql = exploit_db.cursor()
     sql.execute("SELECT * FROM exploit WHERE CVE == '{0}' OR NUM == '{0}';".format(exploit))
     return sql
 

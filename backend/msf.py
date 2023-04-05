@@ -4,16 +4,13 @@ from colorama import init , Fore
 
 init(autoreset=True)
 
-p_session={}
+p_session = {}
 
 class use():
     """ La class use , permet de choisir un exploit (cve) """
     def __init__(self,exploit,**argv):
-        exploit=str(exploit)
-        trouve=0
-
-        if 'CVE' not in exploit:
-            exploit=exploit.lower()
+        exploit = str(exploit).upper()
+        trouve = 0
 
         for (num, cve, name, auteur, vendeur, desc) in database.search_exloit(exploit):
             trouve = 1
@@ -33,19 +30,17 @@ class use():
 
     def options(self):
         """ Affiche les options pour executé l'exploit """
-        print('Les options et leurs valeurs')
+        print('Les options et leurs valeurs \n')
         for i in self.module.ARGS:
-            print(f'\t {i} ==> {self.parametre[i]')
+            try:
+                print(f'\t {i} ==> {self.parametre[i]}')
+            except:
+                print(f'\t {i} ==> ')
 
     def run(self):
         """ Execute l'exploit """
-        try:
-            #os.system('clear')
-            self.session = self.module.exploit(self.parametre)
-        except KeyboardInterrupt:
-            print("Fin de la session")
-            return self.session
-
+        self.session = self.module.exploit(self.parametre)
+        
     def info(self):
         print(self.name)
         print(self.desc)
@@ -56,10 +51,14 @@ def set(session:int,param:dict):
     """
     global p_session
     for i in param.keys():
-        p_session[session].parametre[i]=param[i]
+        p_session[session].parametre[i] = param[i]
 
-def show_options(session:int):
-    print(p_session[session].options())
+def show_options(session = None):
+    if session is None:
+        l = len(p_session)
+        print(p_session[l].options())
+    else:
+        print(p_session[session].options())
 
 
 
