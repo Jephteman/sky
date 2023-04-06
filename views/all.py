@@ -1,11 +1,12 @@
-from sky.backend import world
+from sky.tools import shell
+from sky.tools import db_exfilter
 from sky.backend import metasploit
+from sky.backend import world
 from rich.console import Console
 from rich.table import Table
 
 console = Console()
 table = Table()
-
 
 class target():
     def __init__(self,ip):
@@ -61,6 +62,8 @@ class target():
         else:
             return x
 
+    
+
 class msf():
     def __init__(self):
         self.exploit = ''
@@ -70,6 +73,9 @@ class msf():
     def use(self,cve):
         self.exploit = metasploit.use(cve)
 
+    def options(self):
+        self.exploit.options()
+
     def set(self,parametre):
         sef.exploit.set(parametre)
 
@@ -77,6 +83,7 @@ class msf():
         self.session = self.exploit.run()
 
     def interative(self):
+        self.exploit
 
 
 
