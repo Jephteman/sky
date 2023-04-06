@@ -5,10 +5,13 @@ from colorama import init , Fore
 init(autoreset=True)
 
 p_session = {}
+session = ''
 
 class use():
     """ La class use , permet de choisir un exploit (cve) """
     def __init__(self,exploit,**argv):
+        global session 
+        session = len(p_session)+1
         exploit = str(exploit).upper()
         trouve = 0
 
@@ -42,10 +45,9 @@ class use():
         self.session = self.module.exploit(self.parametre)
         
     def info(self):
-        print(self.name)
-        print(self.desc)
+        return [self.name,self.desc]
 
-def set(session:int,param:dict):
+def set(param:dict):
     """
         Pose les parametres d'exploitation
     """
@@ -60,6 +62,19 @@ def show_options(session = None):
     else:
         print(p_session[session].options())
 
+def back():
+    global session
+    session = ''
 
+def run():
+    if session != '':
+        p_session[session].run()
+        print(Fore.GREEN + "[+] Vous pouvez maintenant interagir avec {}".format(p_session[session].parametre['RHOST']))
+    else:
+        print(Fore.RED + "[+] Veillez choisir un exploit")
 
+exploit = run  
 
+def sessions():
+    for i in p_session.keys():
+        
