@@ -7,16 +7,6 @@ console = Console()
 table = Table()
 
 
-def view_session()
-    table.add_column("Session id", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Exploit", style="magenta")
-    table.add_column("Ip", style="magenta")
-    for i in metasploit.p_session.keys():
-        table.add_row(str(i),metasploit.p_session[i].exploit,metasploit.p_session[i].parametre["RHOST"])
-
-def exploit_info():
-    i = metasploit.p_session[session].info()
-
 class target():
     def __init__(self,ip):
         self.ip = ip
@@ -74,10 +64,9 @@ class target():
 class msf():
     def __init__(self):
         self.exploit = ''
-        self.parametre = {}
         self.session = ''
-
-
+        self.parametre = {}
+        
     def use(self,cve):
         self.exploit = metasploit.use(cve)
 
@@ -87,7 +76,8 @@ class msf():
     def run(self):
         self.session = self.exploit.run()
 
-    def 
+    def interative(self):
+
 
 
 
