@@ -1,11 +1,8 @@
 import sqlite3
-from colorama import init, Fore
-
-init(autoreset=True)
 
 #   ma base de donneé
-exploit_db = sqlite3.Connection('database/exploit.db')
-target_db = sqlite3.Connection('database/target.db')
+exploit_db = sqlite3.Connection('exploit.db')
+target_db = sqlite3.Connection('target.db')
 
 def search_exloit(exploit:str):
     """

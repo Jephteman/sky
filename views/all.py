@@ -83,8 +83,15 @@ class msf():
         self.session = self.exploit.run()
 
     def interative(self):
-        self.exploit
+        self.session.interative()
 
+
+def start(*argv):
+    key = world.verif_key
+    if key:
+        world.init(key)
+    else: 
+        world.init(input('Veillez entré votre clé shodan : '))
 
 
 
