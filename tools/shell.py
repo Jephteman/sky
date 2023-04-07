@@ -11,14 +11,15 @@ class shell():
         self.socket = ''
 
     def reverse_shell(self):
-        s = socket.socket()
+        s = socket.socket(socket.AF_INET,socket.socket.SOCK_STREAM)
         print(Fore.RED+ "[+] En attende de connection...")
         try:
-            s.bind((self.param['RHOST'],self.param['RPORT']))
+            s.bind((self.param['LHOST'],self.param['LPORT']))
             s.listen()
         except Exception as e:
             return e
-
+            
+        sleep(2)
         print(Fore.GREEN+ f"[+] Connecter à {self.param['RHOST']} {self.param['RPORT']}")
         self.socket = s
 

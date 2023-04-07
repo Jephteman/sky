@@ -953,3 +953,5 @@ exploit-dev/remote/50914.py
 exploit-dev/remote/CVE_2020_20277.py
 exploit-dev/remote/CVE_2015_3306.py
 exploit-dev/remote/CVE_2021_46417.py
+exploit-dev/remote/CVE_2020_7247.py
+exploit-dev/remote/name_1.py
